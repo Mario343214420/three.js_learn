@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+  </style>
+</head>
+<body>
+<div id="container"></div>
+<script src="https://cdn.bootcss.com/three.js/r83/three.min.js"></script>
+<script>
+  var w = 400, h =300;//场景高宽
+  var camera_deg = 45, aspect = w / h, near = .1, far = 10000;//相机参数
+  var container = document.getElementById('container');
+  var renderer = new THREE.WebGLRenderer({ alpha: true });
+  var camera = new THREE.PerspectiveCamera(
+    camera_deg, aspect, near, far
+  );
+  var scene = new THREE.Scene();
+  scene.add(camera)
+  camera.position.z = 200;
+
+  renderer.setSize(w, h);
+
+  //附加DOM元素
+  container.append(renderer.domElement);
+
+  //设置球体的值
+  var radius = 50, segemnt = 60, rings = 60;
+  var earth_png = new THREE.TextureLoader().load('./earth.png');
+  var sphereMaterial = new THREE.MeshBasicMaterial({map: earth_png,alpha: true,});
+
+  var sphere = new THREE.Mesh(
+    new THREE.SphereGeometry(radius, segemnt, rings),
+    sphereMaterial
+  );
+  //let sphereGeometry = new THREE.SphereGeometry(1000, 50, 50);//球几何体创建
+  //sphereGeometry.scale(-1, 1, 1);//球形几何网格进行x轴反转，使所有的面点向内
+
+  sphere.geometry.verticesNeedUpdate = true;
+  sphere.geometry.normalsNeedUpdate = true;
+
+  scene.add(sphere);
+
+  var pointLight = new THREE.PointLight(0X000000);
+
+  pointLight.position.x = 10;
+  pointLight.position.y = 50;
+  pointLight.position.z = 150;
+
+  //scene.add(pointLight);
+  function animate(){
+    requestAnimationFrame(animate);
+    //画图
+    //sphere.rotation.x+=.1;
+    sphere.rotation.y+=.01;//延Y轴旋转
+    renderer.render(scene, camera);
+  }
+  animate()
+</script>
+</body>
+</html>

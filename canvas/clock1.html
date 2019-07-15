@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    /*body{*/
+    /*  background-color: #000;*/
+    /*}*/
+    #cir{
+      height: 200px;
+      width: 200px;
+      background-color: #bfbfbf;
+      transform-style: preserve-3d;
+      transform: rotateY(0deg);
+      animation:xuanzhuan linear 1s infinite;
+      -webkit-border-radius: 50%;
+      -moz-border-radius: 50%;
+      border-radius: 50%;
+    }
+    @keyframes xuanzhuan {
+      0% {transform: rotateY(0deg);}
+      50% {transform: rotateY(180deg);}
+      100% {transform: rotateY(360deg);}
+    }
+
+  </style>
+</head>
+<body>
+<div id="cir">
+
+</div>
+<canvas id="cvs"></canvas>
+<canvas id="cvs_bg"></canvas>
+<canvas id="cvs_test" height="500" width="800">你的浏览器不支持canvas</canvas>
+</body>
+<script>
+  var cvs = document.getElementById('cvs'),
+    cvs_bg = document.getElementById('cvs_bg'),
+    pen = cvs.getContext('2d'),
+    pen_bg = cvs_bg.getContext('2d'),
+
+    cvs_test = document.getElementById('cvs_test'),
+    pen_test = cvs_test.getContext('2d');
+
+  var iw = cvs_test.width,
+    ih = cvs_test.height,
+    lns = 40;
+
+  function drawNotChange(pen,length){
+    pen.beginPath();
+    pen.fillStyle='#ff891c';
+    pen.arc(0,0,length,0,2*Math.PI,true);
+    pen.fill();
+    pen.closePath();
+
+    //轨道
+    pen.beginPath();
+    pen.strokeStyle="#ccc";
+    pen.arc(0,0,length*3,0,2*Math.PI,true);
+    pen.stroke();
+    pen.closePath();
+  }
+  function run(pen,w,h,l,time){
+    pen.clearRect(-w/2,-h/2,w,h);
+    drawNotChange(pen,l);
+    pen.save();
+    pen.beginPath();
+    pen.rotate(time*2*Math.PI/180);
+    pen.fillStyle='#03d7f1';
+    pen.arc((l*3),0,l/2,0,2*Math.PI,true);
+    pen.fill()
+    pen.closePath();
+    pen.restore();
+  }
+
+  pen_test.translate((iw/2),(ih/2));
+  drawNotChange(pen_test,lns);
+
+  pen_test.beginPath();
+  pen_test.fillStyle = "#03d7f1";
+  pen_test.arc((lns*3),0,lns/2,0,2*Math.PI,true);
+  pen_test.fill();
+  pen_test.closePath();
+
+  var time = 0;
+  setInterval(function () {
+    run(pen_test,iw,ih,lns,time);
+    time+=1;
+  },15)
+
+  //cvs_bg.width = cvs.width;
+  //cvs_bg.height = cvs.height;
+
+  // 二进制数，数组模式
+  var numArr = [
+    "1111/1001/1001/1001/1001/1001/1111", //0
+    "0001/0001/0001/0001/0001/0001/0001", //1
+    "1111/0001/0001/1111/1000/1000/1111", //2
+    "1111/0001/0001/1111/0001/0001/1111", //3
+    "1001/1001/1001/1111/0001/0001/0001", //4
+    "1111/1000/1000/1111/0001/0001/1111", //5
+    "1111/1000/1000/1111/1001/1001/1111", //6
+    "1111/0001/0001/0001/0001/0001/0001", //7
+    "1111/1001/1001/1111/1001/1001/1111", //8
+    "1111/1001/1001/1111/0001/0001/1111", //9
+    "0000/0000/0010/0000/0010/0000/0000" //:
+  ];
+  var P_radius = 6, Gravity = 9.8;//模拟重力加速度
+  var Particle = function () {
+    this.x = 0;
+    this.y = 0;
+    this.vx = 0;
+    this.vy = 0;
+    this.color = "";
+    this.visible = false;
+    this.drop = false;
+  };
+  Particle.prototype = {
+    constructors: Particle,
+    paint: function () {
+      if (lastColor !== this.color) {
+
+      }
+    }
+  }
+</script>
+</html>
